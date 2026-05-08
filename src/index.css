@@ -291,7 +291,7 @@ td {
   }
 
   .logo-section h1 { font-size: 1.25rem; }
-  .hide-mobile { display: none !important; }
+  .hide-mobile, .nav-btn-desktop { display: none !important; }
 
   .search-input { width: 140px; }
   .header-actions { gap: 0.75rem; }

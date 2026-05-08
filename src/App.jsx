@@ -86,25 +86,29 @@ function App() {
     <div className="app-container">
       <header className="dashboard-header">
         <div className="logo-section">
-          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            XQ 智慧監控清單
-          </motion.h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+              XQ 智慧監控清單
+            </motion.h1>
+            
+            {/* 搬到標題旁邊的自選按鈕 (電腦版) */}
+            <button 
+              className={`nav-btn-desktop ${activeTab === 'favorites' ? 'active' : ''}`}
+              onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
+              style={{ padding: '0.4rem 1rem' }}
+            >
+              <Heart size={16} fill={activeTab === 'favorites' ? '#ff4b2b' : 'none'} color={activeTab === 'favorites' ? '#ff4b2b' : 'currentColor'} />
+              <span>{activeTab === 'favorites' ? '顯示全部' : '我的自選'}</span>
+              {favorites.length > 0 && <span className="count-badge">{favorites.length}</span>}
+            </button>
+          </div>
+          
           <div className="hide-mobile">
             <p>大戶籌碼、外資持股與產業追蹤系統</p>
           </div>
         </div>
 
         <div className="header-actions">
-          {/* 優化後的電腦版自選按鈕 */}
-          <button 
-            className={`nav-btn-desktop ${activeTab === 'favorites' ? 'active' : ''}`}
-            onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
-          >
-            <Heart size={18} fill={activeTab === 'favorites' ? '#ff4b2b' : 'none'} color={activeTab === 'favorites' ? '#ff4b2b' : 'currentColor'} />
-            <span>{activeTab === 'favorites' ? '顯示全部' : '我的自選'}</span>
-            {favorites.length > 0 && <span className="count-badge">{favorites.length}</span>}
-          </button>
-
           <div className="search-container">
             <Search className="search-icon" size={18} />
             <input 
