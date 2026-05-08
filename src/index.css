@@ -213,35 +213,36 @@ th:nth-child(8), td:nth-child(8) { width: 25%; }  /* 產業地位 (最寬) */
 
 th {
   background: var(--table-header);
-  font-size: 0.85rem;
+  font-size: 1rem; /* 從 0.85 放大到 1rem */
   color: var(--text-secondary);
   text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
-td:last-child {
-  white-space: normal; /* 最後一欄允許換行 */
+td {
+  font-size: 1.1rem; /* 整體表格文字加大 */
 }
 
-.priority-row { background: rgba(16, 185, 129, 0.05); }
-.stock-name { display: flex; flex-direction: column; gap: 4px; }
-.name-text { font-size: 1.1rem; font-weight: 600; }
-.stock-id { color: var(--accent-color); font-weight: 700; font-size: 0.85rem; }
-.price-cell { font-weight: 800; font-size: 1.2rem; }
-.premium-high { color: var(--danger); font-weight: 700; }
-.success-text { color: var(--success); font-weight: 700; }
+.stock-name { display: flex; flex-direction: column; gap: 6px; }
+.name-text { font-size: 1.3rem; font-weight: 700; } /* 股票名稱加大 */
+.stock-id { color: var(--accent-color); font-weight: 700; font-size: 1rem; } /* 代碼加大 */
+.price-cell { font-weight: 900; font-size: 1.5rem; } /* 價格最醒目 */
+.premium-high { color: var(--danger); font-weight: 800; font-size: 1.2rem; }
+.success-text { color: var(--success); font-weight: 800; font-size: 1.2rem; }
 
 .status-tag {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: var(--accent-glow);
   color: var(--accent-color);
-  padding: 0.45rem 0.9rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  padding: 0.6rem 1.1rem; /* 增加標籤大小 */
+  border-radius: 10px;
+  font-size: 1rem; /* 標籤文字加大 */
   width: fit-content;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .count-badge { background: #ff4b2b; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; margin-left: 5px; }
