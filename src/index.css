@@ -252,15 +252,44 @@ th, td {
 
 .count-badge { background: #ff4b2b; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; margin-left: 5px; }
 
-/* 手機版 (已經有的 media query 內微調) */
+/* 手機版 (徹底修復版) */
 @media (max-width: 600px) {
+  .app-container { 
+    padding: 1rem; 
+    padding-top: 6.5rem !important; 
+    padding-bottom: 6rem; 
+  }
+  
+  .dashboard-header { 
+    position: fixed; 
+    top: 0; left: 0; right: 0; 
+    z-index: 1000; 
+    background: var(--bg-color); 
+    padding: 1rem; 
+    border-bottom: 1px solid var(--card-border); 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo-section h1 { font-size: 1.2rem !important; white-space: nowrap; }
+  .logo-section p { display: none; } 
+  
+  .header-actions { 
+    display: flex !important;
+    gap: 0.5rem !important; 
+    align-items: center;
+  }
+
+  .search-input { width: 120px !important; }
+  .hide-mobile, .nav-btn-desktop { display: none !important; }
+
   /* 移除外層大框框，讓卡片徹底獨立 */
-  .app-container { padding: 1rem 0.5rem !important; } /* 縮小全螢幕內距 */
   .table-container {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    padding: 0 !important; /* 移除容器內距 */
+    padding: 0 !important;
   }
 
   table, tbody, tr, td { display: block; width: 100%; }
@@ -271,7 +300,7 @@ th, td {
     border-radius: 1.5rem; 
     margin-bottom: 1.5rem; 
     padding: 1.5rem; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* 加強浮空感 */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     backdrop-filter: blur(20px);
   }
 
@@ -281,7 +310,7 @@ th, td {
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    width: 100% !important; /* 強制回歸 100% 寬度 */
+    width: 100% !important;
   }
   td:before { content: attr(data-label); font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
   
