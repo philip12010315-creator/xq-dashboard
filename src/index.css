@@ -256,7 +256,7 @@ th, td {
 @media (max-width: 600px) {
   .app-container { 
     padding: 1rem; 
-    padding-top: 8rem !important; /* 加高留白，防止標題遮擋垂直堆疊的標籤 */
+    padding-top: 5.25rem !important; /* 精確計算：剛好避開 4.5rem 的標題，不浪費空間 */
     padding-bottom: 6rem; 
   }
   
