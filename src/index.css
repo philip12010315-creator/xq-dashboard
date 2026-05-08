@@ -84,6 +84,33 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
   cursor: pointer;
 }
 
+/* 強化版自選按鈕 */
+.premium-btn {
+  border: 1.5px solid var(--accent-color);
+  color: var(--accent-color);
+  background: var(--accent-glow);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.premium-btn:hover {
+  background: var(--accent-color);
+  color: white;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+.date-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--table-header);
+  color: var(--text-secondary);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid var(--card-border);
+}
+
 .nav-btn-desktop.active {
   background: rgba(255, 75, 43, 0.15);
   color: #ff4b2b;

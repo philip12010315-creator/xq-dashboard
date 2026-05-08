@@ -15,10 +15,15 @@ import {
   Star, 
   Heart,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Calendar
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import stockData from './data.json';
+import dashboardData from './data.json';
+
+// 相容處理舊版資料格式
+const stockData = dashboardData.stocks || dashboardData;
+const lastUpdateDate = dashboardData.updateDate || "今日";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,7 +32,7 @@ function App() {
   const [isPriorityMode, setIsPriorityMode] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
-  const [expandedRows, setExpandedRows] = useState([]); // 追蹤展開的行
+  const [expandedRows, setExpandedRows] = useState([]);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('xq_favorites');
     return saved ? JSON.parse(saved) : [];
@@ -114,15 +119,15 @@ function App() {
     <div className="app-container">
       <header className="dashboard-header">
         <div className="logo-section">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', flexWrap: 'wrap' }}>
             <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               XQ 智慧監控清單
             </motion.h1>
             
+            {/* 強化後的自選按鈕 */}
             <button 
-              className={`nav-btn-desktop ${isFavoritesView ? 'active' : ''}`}
+              className={`nav-btn-desktop premium-btn ${isFavoritesView ? 'active' : ''}`}
               onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
-              style={{ padding: '0.4rem 1rem' }}
             >
               <Heart size={16} fill={isFavoritesView ? '#ff4b2b' : 'none'} color={isFavoritesView ? '#ff4b2b' : 'currentColor'} />
               <span>{isFavoritesView ? '顯示全部' : '我的自選'}</span>
@@ -130,8 +135,14 @@ function App() {
             </button>
           </div>
           
-          <div className="hide-mobile">
-            <p>大戶籌碼、外資持股與產業追蹤系統</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
+            <div className="date-badge">
+              <Calendar size={14} />
+              <span>數據更新：{lastUpdateDate}</span>
+            </div>
+            <div className="hide-mobile">
+              <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>大戶籌碼、外資持股與產業追蹤系統</p>
+            </div>
           </div>
         </div>
 
@@ -233,7 +244,6 @@ function App() {
                       </div>
                     </td>
                     
-                    {/* 手機版細節抽屜 */}
                     {isMobile && expandedRows.includes(item.id) && !isFavoritesView && (
                       <>
                         <td data-label="現價" className="detail-td"><span className="price-cell">{item.price}</span></td>
@@ -253,7 +263,6 @@ function App() {
                       </>
                     )}
 
-                    {/* 電腦版正常顯示 */}
                     {!isMobile && !isFavoritesView && (
                       <>
                         <td data-label="現價" className="price-cell">{item.price}</td>
@@ -279,7 +288,6 @@ function App() {
                       </>
                     )}
 
-                    {/* 產業地位：手機版展開才顯示，自選股模式則一直顯示 */}
                     {(!isMobile || expandedRows.includes(item.id) || isFavoritesView) && (
                       <td data-label="產業地位">
                         <div className="status-tag">
