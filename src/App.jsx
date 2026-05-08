@@ -92,7 +92,7 @@ function App() {
       <header className="dashboard-header">
         <div className="logo-section">
           <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            台股選股清單
+            XQ 智慧監控清單
           </motion.h1>
           <div className="hide-mobile">
             <p>大戶籌碼、外資持股與產業追蹤系統</p>
