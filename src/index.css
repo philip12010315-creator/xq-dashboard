@@ -115,9 +115,29 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
 }
 
 .nav-btn-desktop.active {
-  background: rgba(255, 75, 43, 0.1);
+  background: rgba(255, 75, 43, 0.15);
   color: #ff4b2b;
-  border-color: #ff4b2b;
+  border-color: rgba(255, 75, 43, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(255, 75, 43, 0.2);
+}
+
+/* 自選模式下的表格懸浮感 */
+.favorites-mode-active {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(30px) !important;
+  -webkit-backdrop-filter: blur(30px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4) !important;
+  transform: translateY(-5px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme='light'] .favorites-mode-active {
+  background: rgba(255, 255, 255, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1) !important;
 }
 
 .nav-btn-desktop:hover {

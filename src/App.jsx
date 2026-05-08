@@ -130,7 +130,11 @@ function App() {
         </button>
       </div>
 
-      <motion.div className="table-container" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div 
+        className={`table-container ${activeTab === 'favorites' ? 'favorites-mode-active' : ''}`}
+        initial={{ opacity: 0, y: 20 }} 
+        animate={{ opacity: 1, y: 0 }}
+      >
         {sortedData.length === 0 ? (
           <div style={{ padding: '6rem 2rem', textAlign: 'center' }}>
             <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
