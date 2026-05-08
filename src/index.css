@@ -307,18 +307,37 @@ th, td {
     height: 36px !important;
   }
 
+  /* 搜尋框優化：確保文字顯示完整 */
   .search-input { 
-    width: 110px !important; 
-    padding: 0.5rem 0.5rem 0.5rem 2.2rem !important;
-    font-size: 0.85rem;
+    width: 135px !important; 
+    padding: 0.5rem 0.6rem 0.5rem 2.2rem !important;
+    font-size: 0.9rem;
+    border-radius: 20px !important; /* 讓它更圓潤一點，更有設計感 */
   }
 
-  /* 移除外層大框框，讓卡片徹底獨立 */
-  .table-container {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
+  /* 狀態欄優化：改為上下垂直排列，避免文字擠壓換行 */
+  .controls-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.8rem !important;
+    padding: 0.5rem 0 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .controls-bar > div {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100%;
+    gap: 0.6rem !important;
+  }
+
+  .date-badge {
+    width: 100% !important; /* 撐滿寬度 */
+    padding: 0.6rem 1rem !important;
+    justify-content: flex-start !important;
+    border-radius: 12px !important; /* 改為更方正一點的圓角，搭配卡片感 */
+    font-size: 0.9rem !important;
+    white-space: nowrap;
   }
 
   table, tbody, tr, td { display: block; width: 100%; }
