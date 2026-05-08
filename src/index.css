@@ -238,6 +238,23 @@ td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--card-border); }
     white-space: normal;
   }
   
+  .controls-bar {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-card-row {
+    display: block !important;
+    margin-bottom: 1.2rem !important; /* 增加卡片之間的垂直間距 */
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
   .bottom-nav {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0; height: 5.5rem;
     background: var(--card-bg); border-top: 1px solid var(--card-border);
