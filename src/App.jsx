@@ -69,63 +69,39 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* 頂部 Fixed Navbar */}
       <header className="dashboard-header">
         <div className="logo-section">
           <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            XQ Dashboard
+            XQ 智慧監控儀表板
           </motion.h1>
-          <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.2rem' }}>
-            <p style={{ margin: 0, fontSize: '0.8rem' }}>大戶籌碼追蹤</p>
+          <div className="hide-mobile">
+            <p>大戶籌碼、外資持股與產業追蹤系統</p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          <div style={{ position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+        <div className="header-actions">
+          <div className="search-container">
+            <Search className="search-icon" size={18} />
             <input 
               type="text" 
-              placeholder="搜尋..."
+              placeholder="搜尋代號或名稱..."
               className="search-input"
-              style={{
-                background: 'var(--card-bg)',
-                border: '1px solid var(--card-border)',
-                borderRadius: '0.5rem',
-                padding: '0.5rem 0.5rem 0.5rem 2rem',
-                color: 'var(--text-primary)',
-                width: '120px',
-                fontSize: '0.875rem',
-                outline: 'none'
-              }}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="theme-toggle" onClick={toggleTheme} style={{ width: '36px', height: '36px' }}>
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
       </header>
 
-      {/* 優先模式開關 (手機版也顯示) */}
-      <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-start' }}>
+      <div className="controls-bar">
         <button 
           onClick={() => setIsPriorityMode(!isPriorityMode)}
-          style={{
-            background: isPriorityMode ? 'var(--success)' : 'var(--card-bg)',
-            color: isPriorityMode ? '#fff' : 'var(--text-secondary)',
-            border: '1px solid var(--card-border)',
-            borderRadius: '20px',
-            padding: '6px 14px',
-            fontSize: '0.75rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontWeight: 600
-          }}
+          className={`priority-btn ${isPriorityMode ? 'active' : ''}`}
         >
-          <Zap size={12} fill={isPriorityMode ? 'currentColor' : 'none'} />
-          連買 3 週置頂: {isPriorityMode ? 'ON' : 'OFF'}
+          <Zap size={14} fill={isPriorityMode ? 'currentColor' : 'none'} />
+          連買 3 週優先置頂: {isPriorityMode ? '開啟' : '關閉'}
         </button>
       </div>
 
@@ -133,11 +109,12 @@ function App() {
         <table>
           <thead>
             <tr>
-              <th onClick={() => requestSort('id')}>股票 {getSortIcon('id')}</th>
+              <th onClick={() => requestSort('id')}>股票名稱/代號 {getSortIcon('id')}</th>
               <th onClick={() => requestSort('price')}>現價 {getSortIcon('price')}</th>
-              <th onClick={() => requestSort('premium')}>溢價 {getSortIcon('premium')}</th>
-              <th onClick={() => requestSort('buyWeeks')}>連買 {getSortIcon('buyWeeks')}</th>
-              <th onClick={() => requestSort('foreign_hold')}>外資 {getSortIcon('foreign_hold')}</th>
+              <th onClick={() => requestSort('premium')}>溢價 (%) {getSortIcon('premium')}</th>
+              <th onClick={() => requestSort('buyWeeks')}>連買週 {getSortIcon('buyWeeks')}</th>
+              <th onClick={() => requestSort('foreign_hold')}>外資持股 {getSortIcon('foreign_hold')}</th>
+              <th className="hide-mobile" onClick={() => requestSort('industry')}>產業 {getSortIcon('industry')}</th>
               <th>產業地位</th>
             </tr>
           </thead>
@@ -150,40 +127,43 @@ function App() {
                   initial={{ opacity: 0 }} 
                   animate={{ opacity: 1 }} 
                   exit={{ opacity: 0 }}
-                  style={{
-                    background: isPriorityMode && item.buyWeeks >= 3 ? 'rgba(16, 185, 129, 0.08)' : 'transparent'
-                  }}
+                  className={isPriorityMode && item.buyWeeks >= 3 ? 'priority-row' : ''}
                 >
-                  <td data-label="股票">
+                  <td data-label="股票名稱/代號">
                     <div className="stock-name">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontWeight: 600 }}>{item.name}</span>
-                        {item.buyWeeks >= 3 && <Zap size={12} color="var(--success)" fill="var(--success)" />}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span className="name-text">{item.name}</span>
+                        {item.buyWeeks >= 3 && <Zap size={14} color="var(--success)" fill="var(--success)" />}
                       </div>
-                      <span className="stock-id" style={{ color: 'var(--accent-color)' }}>{item.id}</span>
+                      <span className="stock-id">{item.id}</span>
                     </div>
                   </td>
-                  <td data-label="現價" style={{ fontWeight: 800 }}>{item.price}</td>
-                  <td data-label="溢價" style={{ color: item.premium > 5 ? 'var(--danger)' : 'var(--text-primary)', fontWeight: 600 }}>
+                  <td data-label="現價" className="price-cell">{item.price}</td>
+                  <td data-label="溢價 (%)" className={item.premium > 5 ? 'premium-high' : ''}>
                     {item.premium}%
                   </td>
-                  <td data-label="連買">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <TrendingUp size={14} color={item.buyWeeks >= 3 ? 'var(--success)' : 'var(--text-secondary)'} />
-                      <span style={{ color: item.buyWeeks >= 3 ? 'var(--success)' : 'inherit', fontWeight: 700 }}>
-                        {item.buyWeeks}W
-                      </span>
+                  <td data-label="連買週">
+                    <div className="buy-weeks">
+                      <TrendingUp size={16} color={item.buyWeeks >= 3 ? 'var(--success)' : 'var(--text-secondary)'} />
+                      <span className={item.buyWeeks >= 3 ? 'success-text' : ''}>{item.buyWeeks} 週</span>
                     </div>
                   </td>
-                  <td data-label="外資">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <PieChart size={12} color="var(--accent-color)" />
+                  <td data-label="外資持股">
+                    <div className="foreign-hold">
+                      <PieChart size={14} color="var(--accent-color)" />
                       {item.foreign_hold}%
                     </div>
                   </td>
+                  <td data-label="產業" className="hide-mobile">
+                    <div className="industry-cell">
+                      <Layers size={14} color="var(--text-secondary)" />
+                      {item.industry}
+                    </div>
+                  </td>
                   <td data-label="產業地位">
-                    <div className="tag tag-blue" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>
-                      {item.status}
+                    <div className="status-tag">
+                      <Award size={14} />
+                      <span>{item.status}</span>
                     </div>
                   </td>
                 </motion.tr>
@@ -193,7 +173,6 @@ function App() {
         </table>
       </motion.div>
 
-      {/* 底部 Tab Navbar (僅手機版可見) */}
       <nav className="bottom-nav">
         <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
           <Home size={22} />
