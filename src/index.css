@@ -385,16 +385,21 @@ th, td {
   .stock-id { font-size: 0.8rem !important; }
   td:before { content: attr(data-label); font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
   
-  /* 產業地位優化：改為上下排列，避免擠壓 */
+  /* 產業地位優化：隱藏多餘的標籤文字，直接顯示全寬標籤 */
+  td[data-label="產業地位"]:before {
+    display: none !important; /* 隱藏灰色的「產業地位」字眼 */
+  }
   td[data-label="產業地位"] {
     flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.5rem;
+    padding-top: 0.6rem !important; /* 與上方的數據保持一點距離 */
+    padding-bottom: 0 !important;
     border-bottom: none !important;
   }
   td[data-label="產業地位"] .status-tag {
     width: 100%;
+    justify-content: center; /* 讓標籤內容置中，更有卡片底部的質感 */
     white-space: normal;
+    padding: 0.5rem !important; /* 稍微縮小標籤厚度 */
   }
   
   /* 清理舊的冗餘代碼 */
