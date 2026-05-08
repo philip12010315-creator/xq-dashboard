@@ -5,15 +5,15 @@ import {
   ArrowDownRight, 
   TrendingUp, 
   Award, 
-  Layers,
-  Sun,
-  Moon,
-  ArrowUpDown,
-  PieChart,
-  Zap,
-  Home,
-  Star,
-  Heart
+  Layers, 
+  Sun, 
+  Moon, 
+  ArrowUpDown, 
+  PieChart, 
+  Zap, 
+  Home, 
+  Star, 
+  Heart 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import stockData from './data.json';
@@ -23,7 +23,7 @@ function App() {
   const [theme, setTheme] = useState('dark');
   const [sortConfig, setSortConfig] = useState({ key: 'buyWeeks', direction: 'desc' });
   const [isPriorityMode, setIsPriorityMode] = useState(true);
-  const [activeTab, setActiveTab] = useState('home'); // home 或 favorites
+  const [activeTab, setActiveTab] = useState('home');
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('xq_favorites');
     return saved ? JSON.parse(saved) : [];
@@ -33,7 +33,6 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // 儲存自選股到本地
   useEffect(() => {
     localStorage.setItem('xq_favorites', JSON.stringify(favorites));
   }, [favorites]);
@@ -49,18 +48,14 @@ function App() {
 
   const sortedData = useMemo(() => {
     let items = [...stockData];
-    
-    // 如果是自選股分頁，只顯示收藏的
     if (activeTab === 'favorites') {
       items = items.filter(item => favorites.includes(item.id));
     }
-
     if (searchTerm) {
       items = items.filter(item => 
         item.name.includes(searchTerm) || item.id.includes(searchTerm)
       );
     }
-
     items.sort((a, b) => {
       if (isPriorityMode) {
         const aPriority = a.buyWeeks >= 3 ? 1 : 0;
@@ -100,13 +95,14 @@ function App() {
         </div>
 
         <div className="header-actions">
-          {/* 電腦版自選股切換 */}
+          {/* 優化後的電腦版自選按鈕 */}
           <button 
             className={`nav-btn-desktop ${activeTab === 'favorites' ? 'active' : ''}`}
             onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
           >
-            <Star size={18} fill={activeTab === 'favorites' ? 'currentColor' : 'none'} />
-            {activeTab === 'favorites' ? '顯示全部' : '只看自選'}
+            <Heart size={18} fill={activeTab === 'favorites' ? '#ff4b2b' : 'none'} color={activeTab === 'favorites' ? '#ff4b2b' : 'currentColor'} />
+            <span>{activeTab === 'favorites' ? '顯示全部' : '我的自選'}</span>
+            {favorites.length > 0 && <span className="count-badge">{favorites.length}</span>}
           </button>
 
           <div className="search-container">
@@ -136,8 +132,13 @@ function App() {
 
       <motion.div className="table-container" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         {sortedData.length === 0 ? (
-          <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-            {activeTab === 'favorites' ? '目前還沒有收藏的股票喔！' : '找不到符合條件的股票'}
+          <div style={{ padding: '6rem 2rem', textAlign: 'center' }}>
+            <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
+              <Heart size={48} color="var(--text-secondary)" style={{ marginBottom: '1rem', opacity: 0.2 }} />
+              <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
+                {activeTab === 'favorites' ? '您的自選清單空空如也' : '找不到相關股票'}
+              </p>
+            </motion.div>
           </div>
         ) : (
           <table>
@@ -156,11 +157,7 @@ function App() {
               <AnimatePresence>
                 {sortedData.map((item) => (
                   <motion.tr 
-                    key={item.id} 
-                    layout 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }}
+                    key={item.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     className={isPriorityMode && item.buyWeeks >= 3 ? 'priority-row' : ''}
                   >
                     <td data-label="股票名稱/代號">
@@ -170,26 +167,23 @@ function App() {
                             <span className="name-text">{item.name}</span>
                             {item.buyWeeks >= 3 && <Zap size={14} color="var(--success)" fill="var(--success)" />}
                           </div>
-                          <button 
+                          <motion.button 
+                            whileTap={{ scale: 1.5 }}
                             onClick={(e) => toggleFavorite(e, item.id)}
                             style={{ 
                               background: 'none', border: 'none', cursor: 'pointer',
                               color: favorites.includes(item.id) ? '#ff4b2b' : 'var(--text-secondary)',
-                              transition: 'transform 0.2s ease'
+                              padding: '4px'
                             }}
-                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
-                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                           >
-                            <Heart size={20} fill={favorites.includes(item.id) ? '#ff4b2b' : 'none'} />
-                          </button>
+                            <Heart size={22} fill={favorites.includes(item.id) ? '#ff4b2b' : 'none'} />
+                          </motion.button>
                         </div>
                         <span className="stock-id">{item.id}</span>
                       </div>
                     </td>
                     <td data-label="現價" className="price-cell">{item.price}</td>
-                    <td data-label="溢價 (%)" className={item.premium > 5 ? 'premium-high' : ''}>
-                      {item.premium}%
-                    </td>
+                    <td data-label="溢價 (%)" className={item.premium > 5 ? 'premium-high' : ''}>{item.premium}%</td>
                     <td data-label="連買週">
                       <div className="buy-weeks">
                         <TrendingUp size={16} color={item.buyWeeks >= 3 ? 'var(--success)' : 'var(--text-secondary)'} />
@@ -224,11 +218,14 @@ function App() {
 
       <nav className="bottom-nav">
         <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
-          <Home size={24} />
+          <Home size={26} />
           <span>儀表板</span>
         </div>
         <div className={`nav-item ${activeTab === 'favorites' ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
-          <Star size={24} />
+          <div style={{ position: 'relative' }}>
+            <Heart size={26} fill={activeTab === 'favorites' ? '#ff4b2b' : 'none'} color={activeTab === 'favorites' ? '#ff4b2b' : 'currentColor'} />
+            {favorites.length > 0 && <span className="mobile-badge">{favorites.length}</span>}
+          </div>
           <span>自選股</span>
         </div>
       </nav>

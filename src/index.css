@@ -82,16 +82,42 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
   border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  position: relative;
+}
+
+.count-badge {
+  background: #ff4b2b;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.mobile-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: #ff4b2b;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 50%;
+  border: 2px solid var(--card-bg);
+  min-width: 18px;
+  text-align: center;
 }
 
 .nav-btn-desktop.active {
-  background: var(--accent-glow);
-  color: var(--accent-color);
-  border-color: var(--accent-color);
+  background: rgba(255, 75, 43, 0.1);
+  color: #ff4b2b;
+  border-color: #ff4b2b;
 }
 
 .nav-btn-desktop:hover {
