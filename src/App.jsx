@@ -109,6 +109,10 @@ function App() {
         </div>
 
         <div className="header-actions">
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
           <div className="search-container">
             <Search className="search-icon" size={18} />
             <input 
@@ -118,9 +122,6 @@ function App() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="theme-toggle" onClick={toggleTheme}>
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
         </div>
       </header>
 
