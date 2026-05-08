@@ -13,8 +13,7 @@ import {
   Zap,
   Home,
   Star,
-  BarChart2,
-  Settings
+  Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import stockData from './data.json';
@@ -24,21 +23,44 @@ function App() {
   const [theme, setTheme] = useState('dark');
   const [sortConfig, setSortConfig] = useState({ key: 'buyWeeks', direction: 'desc' });
   const [isPriorityMode, setIsPriorityMode] = useState(true);
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('home'); // home 或 favorites
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem('xq_favorites');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  // 儲存自選股到本地
+  useEffect(() => {
+    localStorage.setItem('xq_favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+
+  const toggleFavorite = (e, id) => {
+    e.stopPropagation();
+    setFavorites(prev => 
+      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+    );
+  };
 
   const sortedData = useMemo(() => {
     let items = [...stockData];
+    
+    // 如果是自選股分頁，只顯示收藏的
+    if (activeTab === 'favorites') {
+      items = items.filter(item => favorites.includes(item.id));
+    }
+
     if (searchTerm) {
       items = items.filter(item => 
         item.name.includes(searchTerm) || item.id.includes(searchTerm)
       );
     }
+
     items.sort((a, b) => {
       if (isPriorityMode) {
         const aPriority = a.buyWeeks >= 3 ? 1 : 0;
@@ -52,13 +74,11 @@ function App() {
       return 0;
     });
     return items;
-  }, [stockData, sortConfig, searchTerm, isPriorityMode]);
+  }, [stockData, sortConfig, searchTerm, isPriorityMode, activeTab, favorites]);
 
   const requestSort = (key) => {
     let direction = 'desc';
-    if (sortConfig.key === key && sortConfig.direction === 'desc') {
-      direction = 'asc';
-    }
+    if (sortConfig.key === key && sortConfig.direction === 'desc') direction = 'asc';
     setSortConfig({ key, direction });
   };
 
@@ -106,89 +126,101 @@ function App() {
       </div>
 
       <motion.div className="table-container" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <table>
-          <thead>
-            <tr>
-              <th onClick={() => requestSort('id')}>股票名稱/代號 {getSortIcon('id')}</th>
-              <th onClick={() => requestSort('price')}>現價 {getSortIcon('price')}</th>
-              <th onClick={() => requestSort('premium')}>溢價 (%) {getSortIcon('premium')}</th>
-              <th onClick={() => requestSort('buyWeeks')}>連買週 {getSortIcon('buyWeeks')}</th>
-              <th onClick={() => requestSort('foreign_hold')}>外資持股 {getSortIcon('foreign_hold')}</th>
-              <th className="hide-mobile" onClick={() => requestSort('industry')}>產業 {getSortIcon('industry')}</th>
-              <th>產業地位</th>
-            </tr>
-          </thead>
-          <tbody>
-            <AnimatePresence>
-              {sortedData.map((item) => (
-                <motion.tr 
-                  key={item.id} 
-                  layout 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
-                  exit={{ opacity: 0 }}
-                  className={isPriorityMode && item.buyWeeks >= 3 ? 'priority-row' : ''}
-                >
-                  <td data-label="股票名稱/代號">
-                    <div className="stock-name">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span className="name-text">{item.name}</span>
-                        {item.buyWeeks >= 3 && <Zap size={14} color="var(--success)" fill="var(--success)" />}
+        {sortedData.length === 0 ? (
+          <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            {activeTab === 'favorites' ? '目前還沒有收藏的股票喔！' : '找不到符合條件的股票'}
+          </div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th onClick={() => requestSort('id')}>股票名稱/代號 {getSortIcon('id')}</th>
+                <th onClick={() => requestSort('price')}>現價 {getSortIcon('price')}</th>
+                <th onClick={() => requestSort('premium')}>溢價 (%) {getSortIcon('premium')}</th>
+                <th onClick={() => requestSort('buyWeeks')}>連買週 {getSortIcon('buyWeeks')}</th>
+                <th onClick={() => requestSort('foreign_hold')}>外資持股 {getSortIcon('foreign_hold')}</th>
+                <th className="hide-mobile" onClick={() => requestSort('industry')}>產業 {getSortIcon('industry')}</th>
+                <th>產業地位</th>
+              </tr>
+            </thead>
+            <tbody>
+              <AnimatePresence>
+                {sortedData.map((item) => (
+                  <motion.tr 
+                    key={item.id} 
+                    layout 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    className={isPriorityMode && item.buyWeeks >= 3 ? 'priority-row' : ''}
+                  >
+                    <td data-label="股票名稱/代號">
+                      <div className="stock-name">
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span className="name-text">{item.name}</span>
+                            {item.buyWeeks >= 3 && <Zap size={14} color="var(--success)" fill="var(--success)" />}
+                          </div>
+                          <button 
+                            onClick={(e) => toggleFavorite(e, item.id)}
+                            style={{ 
+                              background: 'none', border: 'none', cursor: 'pointer',
+                              color: favorites.includes(item.id) ? '#ff4b2b' : 'var(--text-secondary)',
+                              transition: 'transform 0.2s ease'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                          >
+                            <Heart size={20} fill={favorites.includes(item.id) ? '#ff4b2b' : 'none'} />
+                          </button>
+                        </div>
+                        <span className="stock-id">{item.id}</span>
                       </div>
-                      <span className="stock-id">{item.id}</span>
-                    </div>
-                  </td>
-                  <td data-label="現價" className="price-cell">{item.price}</td>
-                  <td data-label="溢價 (%)" className={item.premium > 5 ? 'premium-high' : ''}>
-                    {item.premium}%
-                  </td>
-                  <td data-label="連買週">
-                    <div className="buy-weeks">
-                      <TrendingUp size={16} color={item.buyWeeks >= 3 ? 'var(--success)' : 'var(--text-secondary)'} />
-                      <span className={item.buyWeeks >= 3 ? 'success-text' : ''}>{item.buyWeeks} 週</span>
-                    </div>
-                  </td>
-                  <td data-label="外資持股">
-                    <div className="foreign-hold">
-                      <PieChart size={14} color="var(--accent-color)" />
-                      {item.foreign_hold}%
-                    </div>
-                  </td>
-                  <td data-label="產業" className="hide-mobile">
-                    <div className="industry-cell">
-                      <Layers size={14} color="var(--text-secondary)" />
-                      {item.industry}
-                    </div>
-                  </td>
-                  <td data-label="產業地位">
-                    <div className="status-tag">
-                      <Award size={14} />
-                      <span>{item.status}</span>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </AnimatePresence>
-          </tbody>
-        </table>
+                    </td>
+                    <td data-label="現價" className="price-cell">{item.price}</td>
+                    <td data-label="溢價 (%)" className={item.premium > 5 ? 'premium-high' : ''}>
+                      {item.premium}%
+                    </td>
+                    <td data-label="連買週">
+                      <div className="buy-weeks">
+                        <TrendingUp size={16} color={item.buyWeeks >= 3 ? 'var(--success)' : 'var(--text-secondary)'} />
+                        <span className={item.buyWeeks >= 3 ? 'success-text' : ''}>{item.buyWeeks} 週</span>
+                      </div>
+                    </td>
+                    <td data-label="外資持股">
+                      <div className="foreign-hold">
+                        <PieChart size={14} color="var(--accent-color)" />
+                        {item.foreign_hold}%
+                      </div>
+                    </td>
+                    <td data-label="產業" className="hide-mobile">
+                      <div className="industry-cell">
+                        <Layers size={14} color="var(--text-secondary)" />
+                        {item.industry}
+                      </div>
+                    </td>
+                    <td data-label="產業地位">
+                      <div className="status-tag">
+                        <Award size={14} />
+                        <span>{item.status}</span>
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
+            </tbody>
+          </table>
+        )}
       </motion.div>
 
       <nav className="bottom-nav">
         <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
-          <Home size={22} />
+          <Home size={24} />
           <span>儀表板</span>
         </div>
-        <div className={`nav-item ${activeTab === 'star' ? 'active' : ''}`} onClick={() => setActiveTab('star')}>
-          <Star size={22} />
+        <div className={`nav-item ${activeTab === 'favorites' ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
+          <Star size={24} />
           <span>自選股</span>
-        </div>
-        <div className={`nav-item ${activeTab === 'chart' ? 'active' : ''}`} onClick={() => setActiveTab('chart')}>
-          <BarChart2 size={22} />
-          <span>分析</span>
-        </div>
-        <div className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
-          <Settings size={22} />
-          <span>設定</span>
         </div>
       </nav>
     </div>
