@@ -16,12 +16,13 @@ import {
   Heart,
   ChevronDown,
   ChevronUp,
-  Calendar
+  Calendar,
+  Users,
+  ListFilter
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dashboardData from './data.json';
 
-// 優先使用資料內的日期，若無則顯示系統偵測日期
 const stockData = dashboardData.stocks || (Array.isArray(dashboardData) ? dashboardData : []);
 const excelDate = dashboardData.updateDate;
 const fallbackDate = new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -158,15 +159,23 @@ function App() {
         </div>
       </header>
 
-      {/* 功能列：左邊按鈕，右邊日期 */}
+      {/* 功能列 */}
       <div className="controls-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <button 
-          onClick={() => setIsPriorityMode(!isPriorityMode)}
-          className={`priority-btn ${isPriorityMode ? 'active' : ''} ${isMobile ? 'hide-mobile' : ''}`}
-        >
-          <Zap size={14} fill={isPriorityMode ? 'currentColor' : 'none'} />
-          連買 3 週優先置頂: {isPriorityMode ? '開啟' : '關閉'}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <button 
+            onClick={() => setIsPriorityMode(!isPriorityMode)}
+            className={`priority-btn ${isPriorityMode ? 'active' : ''} ${isMobile ? 'hide-mobile' : ''}`}
+          >
+            <Zap size={14} fill={isPriorityMode ? 'currentColor' : 'none'} />
+            大戶連增優先: {isPriorityMode ? '開啟' : '關閉'}
+          </button>
+
+          {/* 新增：符合檔數標籤 */}
+          <div className="date-badge count-indicator">
+            <ListFilter size={14} />
+            <span>符合檔數：{stockData.length} 檔</span>
+          </div>
+        </div>
 
         <div className="date-badge">
           <Calendar size={14} />
@@ -198,8 +207,9 @@ function App() {
                     <>
                       <th onClick={() => requestSort('price')}>現價 {getSortIcon('price')}</th>
                       <th onClick={() => requestSort('premium')}>溢價 (%) {getSortIcon('premium')}</th>
-                      <th onClick={() => requestSort('buyWeeks')}>連買週 {getSortIcon('buyWeeks')}</th>
-                      <th onClick={() => requestSort('foreign_hold')}>外資持股 {getSortIcon('foreign_hold')}</th>
+                      <th onClick={() => requestSort('buyWeeks')}>大戶連增 {getSortIcon('buyWeeks')}</th>
+                      <th onClick={() => requestSort('major_hold')}>大戶持股% {getSortIcon('major_hold')}</th>
+                      <th onClick={() => requestSort('foreign_hold')}>外資持股% {getSortIcon('foreign_hold')}</th>
                       <th className="hide-mobile" onClick={() => requestSort('industry')}>產業 {getSortIcon('industry')}</th>
                     </>
                   )}
@@ -249,15 +259,21 @@ function App() {
                       <>
                         <td data-label="現價" className="detail-td"><span className="price-cell">{item.price}</span></td>
                         <td data-label="溢價 (%)" className="detail-td"><span className={item.premium > 5 ? 'premium-high' : ''}>{item.premium}%</span></td>
-                        <td data-label="連買週" className="detail-td">
+                        <td data-label="大戶連增" className="detail-td">
                           <div className="buy-weeks">
                             <TrendingUp size={16} color={item.buyWeeks >= 3 ? 'var(--success)' : 'var(--text-secondary)'} />
-                            <span className={item.buyWeeks >= 3 ? 'success-text' : ''}>{item.buyWeeks} 週</span>
+                            <span>{item.buyWeeks} 週</span>
                           </div>
                         </td>
-                        <td data-label="外資持股" className="detail-td">
+                        <td data-label="大戶持股%" className="detail-td">
                           <div className="foreign-hold">
-                            <PieChart size={14} color="var(--accent-color)" />
+                            <Users size={14} color="var(--accent-color)" />
+                            {item.major_hold}%
+                          </div>
+                        </td>
+                        <td data-label="外資持股%" className="detail-td">
+                          <div className="foreign-hold">
+                            <PieChart size={14} color="#00d2ff" />
                             {item.foreign_hold}%
                           </div>
                         </td>
@@ -268,15 +284,21 @@ function App() {
                       <>
                         <td data-label="現價" className="price-cell">{item.price}</td>
                         <td data-label="溢價 (%)" className={item.premium > 5 ? 'premium-high' : ''}>{item.premium}%</td>
-                        <td data-label="連買週">
+                        <td data-label="大戶連增">
                           <div className="buy-weeks">
                             <TrendingUp size={16} color={item.buyWeeks >= 3 ? 'var(--success)' : 'var(--text-secondary)'} />
                             <span className={item.buyWeeks >= 3 ? 'success-text' : ''}>{item.buyWeeks} 週</span>
                           </div>
                         </td>
-                        <td data-label="外資持股">
+                        <td data-label="大戶持股%">
                           <div className="foreign-hold">
-                            <PieChart size={14} color="var(--accent-color)" />
+                            <Users size={14} color="var(--accent-color)" />
+                            {item.major_hold}%
+                          </div>
+                        </td>
+                        <td data-label="外資持股%">
+                          <div className="foreign-hold">
+                            <PieChart size={14} color="#00d2ff" />
                             {item.foreign_hold}%
                           </div>
                         </td>
