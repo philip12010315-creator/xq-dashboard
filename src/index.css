@@ -185,34 +185,22 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
   transform: translateY(-5px);
 }
 
-table {
-  width: 100% !important;
-  border-collapse: separate;
-  border-spacing: 0;
-  color: var(--text-primary);
-  table-layout: fixed; /* 必須使用 fixed 才能精確控制百分比 */
-}
-
-th, td {
-  padding: 1.25rem 1rem; 
-  text-align: left;
-  border-bottom: 1px solid var(--card-border);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* 精確寬度比例分配 (加起來 100%) */
-th:nth-child(1), td:nth-child(1) { width: 15%; }  /* 股票名稱 */
-th:nth-child(2), td:nth-child(2) { width: 10%; }  /* 現價 */
-th:nth-child(3), td:nth-child(3) { width: 10%; }  /* 溢價 */
-th:nth-child(4), td:nth-child(4) { width: 10%; }  /* 大戶連增 */
-th:nth-child(5), td:nth-child(5) { width: 10%; }  /* 大戶持股 */
-th:nth-child(6), td:nth-child(6) { width: 10%; }  /* 外資持股 */
-th:nth-child(7), td:nth-child(7) { width: 10%; }  /* 產業 */
-th:nth-child(8), td:nth-child(8) { width: 25%; }  /* 產業地位 (最寬) */
-
-/* 電腦版專屬字體強化 (寬度 > 600px) */
+/* 電腦版專屬字體與佈局強化 (寬度 > 600px) */
 @media (min-width: 601px) {
+  table {
+    table-layout: fixed; /* 僅在電腦版使用固定佈局 */
+  }
+
+  /* 僅在電腦版執行精確寬度分配 */
+  th:nth-child(1), td:nth-child(1) { width: 15%; }  /* 股票名稱 */
+  th:nth-child(2), td:nth-child(2) { width: 10%; }  /* 現價 */
+  th:nth-child(3), td:nth-child(3) { width: 10%; }  /* 溢價 */
+  th:nth-child(4), td:nth-child(4) { width: 10%; }  /* 大戶連增 */
+  th:nth-child(5), td:nth-child(5) { width: 10%; }  /* 大戶持股 */
+  th:nth-child(6), td:nth-child(6) { width: 10%; }  /* 外資持股 */
+  th:nth-child(7), td:nth-child(7) { width: 10%; }  /* 產業 */
+  th:nth-child(8), td:nth-child(8) { width: 25%; }  /* 產業地位 */
+
   th {
     background: var(--table-header);
     font-size: 1rem;
@@ -226,6 +214,21 @@ th:nth-child(8), td:nth-child(8) { width: 25%; }  /* 產業地位 (最寬) */
   .stock-id { font-size: 1rem; }
   .price-cell { font-size: 1.5rem; }
   .status-tag { font-size: 1rem; padding: 0.6rem 1.1rem; }
+}
+
+/* 通用標籤設定 (不影響佈局) */
+table {
+  width: 100% !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--text-primary);
+  table-layout: auto; /* 預設為自動，手機版才不會跑掉 */
+}
+
+th, td {
+  padding: 1.25rem 1rem; 
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
 }
 
 /* 通用標籤設定 */
