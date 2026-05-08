@@ -30,6 +30,12 @@
   --table-header: rgba(255, 255, 255, 0.05);
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* 優化過度效能 */
 body, .app-container, .table-container, .stat-card, .theme-toggle, td, th, input {
   transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
