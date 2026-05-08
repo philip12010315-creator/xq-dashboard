@@ -356,8 +356,8 @@ th, td {
   tbody { 
     display: flex !important; 
     flex-direction: column !important; 
-    gap: 1.5rem !important; /* 強制每一張卡片之間都要有 1.5rem 的空隙 */
-    padding: 0.5rem !important;
+    gap: 0.8rem !important; /* 【極限壓縮】將卡片間的距離從 1.5rem 砍半到 0.8rem */
+    padding: 0.2rem !important;
   }
   
   tr { 
@@ -365,20 +365,24 @@ th, td {
     width: 100% !important;
     background: var(--card-bg) !important; 
     border: 1.5px solid rgba(255, 255, 255, 0.15) !important; 
-    border-radius: 1.25rem !important; /* 稍微縮小圓角 */
-    padding: 1rem 1.25rem !important; /* 大幅縮小卡片上下左右的內距 */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+    border-radius: 1rem !important; /* 配合變小的卡片，圓角也微縮 */
+    padding: 0.6rem 1rem !important; /* 【極限壓縮】大幅縮小卡片內部的上下左右空間 */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
     backdrop-filter: blur(20px);
   }
 
   td { 
     border: none !important; 
-    padding: 0.5rem 0 !important; /* 縮小卡片內每一行的間距 */
+    padding: 0.2rem 0 !important; /* 【極限壓縮】把卡片內每一行的間距縮到最小 */
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
     width: 100% !important;
   }
+  
+  /* 縮小卡片內文字，爭取垂直空間 */
+  .name-text { font-size: 1.05rem !important; }
+  .stock-id { font-size: 0.8rem !important; }
   td:before { content: attr(data-label); font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
   
   /* 產業地位優化：改為上下排列，避免擠壓 */
@@ -393,22 +397,7 @@ th, td {
     white-space: normal;
   }
   
-  .controls-bar {
-    flex-direction: column;
-    gap: 0.8rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .mobile-card-row {
-    display: block !important;
-    margin-bottom: 1.2rem !important; /* 增加卡片之間的垂直間距 */
-    background: var(--card-bg);
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
+  /* 清理舊的冗餘代碼 */
 
   .bottom-nav {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0; height: 4.2rem; /* 降低導航欄高度 */
