@@ -186,18 +186,30 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
 }
 
 table {
-  width: 100%;
+  width: 100% !important;
   border-collapse: separate;
   border-spacing: 0;
   color: var(--text-primary);
-  table-layout: auto; /* 回歸自動佈局，讓它自然撐開 */
+  table-layout: fixed; /* 必須使用 fixed 才能精確控制百分比 */
 }
 
 th, td {
-  padding: 1.25rem 1.5rem; 
+  padding: 1.25rem 1rem; 
   text-align: left;
   border-bottom: 1px solid var(--card-border);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+/* 精確寬度比例分配 (加起來 100%) */
+th:nth-child(1), td:nth-child(1) { width: 15%; }  /* 股票名稱 */
+th:nth-child(2), td:nth-child(2) { width: 10%; }  /* 現價 */
+th:nth-child(3), td:nth-child(3) { width: 10%; }  /* 溢價 */
+th:nth-child(4), td:nth-child(4) { width: 10%; }  /* 大戶連增 */
+th:nth-child(5), td:nth-child(5) { width: 10%; }  /* 大戶持股 */
+th:nth-child(6), td:nth-child(6) { width: 10%; }  /* 外資持股 */
+th:nth-child(7), td:nth-child(7) { width: 10%; }  /* 產業 */
+th:nth-child(8), td:nth-child(8) { width: 25%; }  /* 產業地位 (最寬) */
 
 th {
   background: var(--table-header);
@@ -208,16 +220,8 @@ th {
   letter-spacing: 0.05em;
 }
 
-/* 產業地位欄位（最後一欄）填滿剩餘空間，且允許自動換行 */
-th:last-child, td:last-child {
-  width: 40%; /* 給它最大的配額 */
-  white-space: normal;
-  min-width: 300px;
-}
-
-/* 確保其他欄位有足夠的基本寬度 */
-th:not(:last-child), td:not(:last-child) {
-  min-width: 100px;
+td:last-child {
+  white-space: normal; /* 最後一欄允許換行 */
 }
 
 .priority-row { background: rgba(16, 185, 129, 0.05); }
