@@ -252,11 +252,11 @@ th, td {
 
 .count-badge { background: #ff4b2b; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; margin-left: 5px; }
 
-/* 手機版 (標題排版精確修復) */
+/* 手機版 (徹底修復版) */
 @media (max-width: 600px) {
   .app-container { 
     padding: 1rem; 
-    padding-top: 5.5rem !important; 
+    padding-top: 8rem !important; /* 加高留白，防止標題遮擋垂直堆疊的標籤 */
     padding-bottom: 6rem; 
   }
   
