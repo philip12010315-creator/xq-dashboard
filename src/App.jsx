@@ -138,7 +138,7 @@ function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
             <div className="date-badge">
               <Calendar size={14} />
-              <span>數據更新：{lastUpdateDate}</span>
+              <span>數據更新呈現：{lastUpdateDate}</span>
             </div>
             <div className="hide-mobile">
               <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>大戶籌碼、外資持股與產業追蹤系統</p>
