@@ -2,19 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
 
-// 設定固定檔名
 const FIXED_FILENAME_CSV = '成本+大小+人數.csv';
 const FIXED_FILENAME_XLSX = '成本+大小+人數.xlsx';
 
 let targetFile = "";
 
-// 優先尋找固定檔名的檔案
 if (fs.existsSync(FIXED_FILENAME_XLSX)) {
     targetFile = FIXED_FILENAME_XLSX;
 } else if (fs.existsSync(FIXED_FILENAME_CSV)) {
     targetFile = FIXED_FILENAME_CSV;
 } else {
-    // 備援方案：如果找不到固定檔名，才去找最新的檔案
     const files = fs.readdirSync('.').filter(f => f.endsWith('.csv') || f.endsWith('.xlsx'));
     if (files.length > 0) {
         targetFile = files.sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)[0];
@@ -38,26 +35,22 @@ let updateDate = "";
 let headerIndex = -1;
 let colMap = {};
 
-// 1. 定位日期與標題
 for (let i = 0; i < data.length; i++) {
     const row = data[i];
     for (let j = 0; j < row.length; j++) {
         const cell = String(row[j] || "").trim();
-        
         if (!updateDate) {
             const cnMatch = cell.match(/(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
             const standardMatch = cell.match(/(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})/);
             if (cnMatch) updateDate = `${cnMatch[1]}/${cnMatch[2].padStart(2,'0')}/${cnMatch[3].padStart(2,'0')}`;
             else if (standardMatch) updateDate = `${standardMatch[1]}/${standardMatch[2].padStart(2,'0')}/${standardMatch[3].padStart(2,'0')}`;
         }
-
         if (cell.includes("代碼") || cell.includes("商品")) {
             headerIndex = i;
         }
     }
 }
 
-// 2. 標題映射 (首位優先)
 if (headerIndex !== -1) {
     const headers = data[headerIndex];
     headers.forEach((h, idx) => {
@@ -74,7 +67,6 @@ if (headerIndex !== -1) {
     });
 }
 
-// 數據清洗函式
 function superClean(val) {
     if (val === undefined || val === null || val === "") return 0;
     if (typeof val === 'number') return val;
@@ -83,12 +75,10 @@ function superClean(val) {
     return isNaN(num) ? 0 : num;
 }
 
-// 3. 抓取資料
 if (headerIndex !== -1) {
     for (let i = headerIndex + 1; i < data.length; i++) {
         const row = data[i];
         if (!row || !row[colMap.id]) continue;
-
         result.push({
             id: String(row[colMap.id] || "").trim(),
             name: String(row[colMap.name] || "").trim(),
@@ -103,7 +93,6 @@ if (headerIndex !== -1) {
     }
 }
 
-// 備援日期
 if (!updateDate) {
     const d = fs.statSync(targetFile).mtime;
     updateDate = `${d.getFullYear()}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`;
