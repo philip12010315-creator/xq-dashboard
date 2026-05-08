@@ -254,33 +254,32 @@ th, td {
 
 /* 手機版 (已經有的 media query 內微調) */
 @media (max-width: 600px) {
-  .name-text { font-size: 1.1rem !important; font-weight: 700; }
-  .stock-id { font-size: 0.85rem !important; }
-  .price-cell { font-size: 1.25rem !important; }
-  .status-tag { font-size: 0.85rem !important; padding: 0.45rem 0.9rem !important; }
-  /* 其他手機版設定... */
-  .app-container { padding: 1rem; padding-top: 5.5rem; padding-bottom: 6rem; }
-  .dashboard-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--bg-color); padding: 1rem; border-bottom: 1px solid var(--card-border); }
-  .logo-section h1 { font-size: 1.1rem !important; }
-  .hide-mobile, .nav-btn-desktop { display: none !important; }
-  .header-actions { gap: 0.75rem !important; }
-  .search-input { width: 140px; }
+  /* 移除外層大框框，讓卡片徹底獨立 */
+  .table-container {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
 
   table, tbody, tr, td { display: block; width: 100%; }
+  
   tr { 
     background: var(--card-bg); 
-    border: 1.5px solid var(--card-border); /* 強化外框 */
-    border-radius: 1.25rem; 
-    margin-bottom: 2rem; /* 增加卡片間的距離 */
+    border: 1.5px solid var(--card-border); 
+    border-radius: 1.5rem; 
+    margin-bottom: 1.5rem; 
     padding: 1.5rem; 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* 增加立體感 */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* 加強浮空感 */
+    backdrop-filter: blur(20px);
   }
+
   td { 
-    border: none !important; /* 徹底移除內部底線 */
+    border: none !important; 
     padding: 0.8rem 0; 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
+    width: 100% !important; /* 強制回歸 100% 寬度 */
   }
   td:before { content: attr(data-label); font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
   
