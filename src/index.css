@@ -315,29 +315,30 @@ th, td {
     border-radius: 20px !important;
   }
 
-  /* 狀態欄優化：確保從標題列下方露出 */
+  /* 狀態欄優化：確保從標題列下方露出，並極限壓縮空間 */
   .controls-bar {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 0.8rem !important;
-    padding: 0.5rem 1rem !important;
-    margin-bottom: 1.5rem !important;
+    gap: 0.5rem !important; /* 縮小兩個標籤之間的空隙 */
+    padding: 0 0.5rem !important; /* 縮小兩側與上下的內距 */
+    margin-bottom: 1rem !important; /* 縮小與下方卡片的距離 */
   }
 
   .controls-bar > div {
+    display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
     width: 100%;
-    gap: 0.6rem !important;
+    gap: 0.4rem !important;
   }
 
   .date-badge {
     width: 100% !important; 
-    padding: 0.7rem 1rem !important;
+    padding: 0.6rem 0.8rem !important; /* 稍微縮小標籤本身的內距 */
     justify-content: flex-start !important;
     border-radius: 10px !important;
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important; /* 稍微縮小字體 */
     background: var(--card-bg) !important;
     border: 1px solid var(--card-border) !important;
     white-space: nowrap;
