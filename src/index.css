@@ -194,8 +194,20 @@ td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--card-border); }
   table thead { display: none; }
   table, tbody, tr, td { display: block; width: 100%; }
   tr { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 1.25rem; margin-bottom: 1.5rem; padding: 1.25rem; }
-  td { border: none; padding: 0.7rem 0; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+  td { border: none; padding: 0.7rem 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
   td:before { content: attr(data-label); font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
+  
+  /* 產業地位優化：改為上下排列，避免擠壓 */
+  td[data-label="產業地位"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem;
+    border-bottom: none !important;
+  }
+  td[data-label="產業地位"] .status-tag {
+    width: 100%;
+    white-space: normal;
+  }
   
   .bottom-nav {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0; height: 5.5rem;
