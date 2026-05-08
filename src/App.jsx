@@ -161,25 +161,25 @@ function App() {
 
       {/* 功能列 */}
       <div className="controls-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <button 
-            onClick={() => setIsPriorityMode(!isPriorityMode)}
-            className={`priority-btn ${isPriorityMode ? 'active' : ''} ${isMobile ? 'hide-mobile' : ''}`}
-          >
-            <Zap size={14} fill={isPriorityMode ? 'currentColor' : 'none'} />
-            大戶連增優先: {isPriorityMode ? '開啟' : '關閉'}
-          </button>
+        <button 
+          onClick={() => setIsPriorityMode(!isPriorityMode)}
+          className={`priority-btn ${isPriorityMode ? 'active' : ''} ${isMobile ? 'hide-mobile' : ''}`}
+        >
+          <Zap size={14} fill={isPriorityMode ? 'currentColor' : 'none'} />
+          大戶連增優先: {isPriorityMode ? '開啟' : '關閉'}
+        </button>
 
-          {/* 新增：符合檔數標籤 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {/* 符合檔數移至此處 */}
           <div className="date-badge count-indicator">
             <ListFilter size={14} />
             <span>符合檔數：{stockData.length} 檔</span>
           </div>
-        </div>
 
-        <div className="date-badge">
-          <Calendar size={14} />
-          <span>數據更新呈現：{displayDate}</span>
+          <div className="date-badge">
+            <Calendar size={14} />
+            <span>數據更新呈現：{displayDate}</span>
+          </div>
         </div>
       </div>
 
