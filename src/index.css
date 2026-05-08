@@ -185,9 +185,29 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
   transform: translateY(-5px);
 }
 
-table { width: 100%; border-collapse: collapse; }
-th { background: var(--table-header); padding: 1.25rem 1.5rem; font-size: 0.8rem; color: var(--text-secondary); text-align: left; text-transform: uppercase; }
-td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--card-border); }
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--text-primary);
+  table-layout: auto;
+}
+
+th, td {
+  padding: 1.2rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+
+th { background: var(--table-header); font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; }
+
+/* 讓最後一欄（產業地位）可以伸縮並填滿空間 */
+th:last-child, td:last-child {
+  width: 100%;
+  white-space: normal;
+  min-width: 250px;
+}
 
 .priority-row { background: rgba(16, 185, 129, 0.05); }
 .stock-name { display: flex; flex-direction: column; gap: 4px; }
