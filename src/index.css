@@ -332,23 +332,33 @@ th, td {
   }
 
   .date-badge {
-    width: 100% !important; /* 撐滿寬度 */
-    padding: 0.6rem 1rem !important;
-    justify-content: flex-start !important;
-    border-radius: 12px !important; /* 改為更方正一點的圓角，搭配卡片感 */
-    font-size: 0.9rem !important;
-    white-space: nowrap;
+    width: 100% !important;  /* 移除外層大框框，讓卡片徹底獨立 */
+  }
+  .app-container { padding: 1rem 0.5rem !important; }
+  .table-container {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    overflow: visible !important; /* 確保陰影不會被切掉 */
   }
 
-  table, tbody, tr, td { display: block; width: 100%; }
+  table { border-spacing: 0; border-collapse: collapse; }
+  tbody { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 1.5rem !important; /* 強制每一張卡片之間都要有 1.5rem 的空隙 */
+    padding: 0.5rem !important;
+  }
   
   tr { 
-    background: var(--card-bg); 
-    border: 1.5px solid var(--card-border); 
-    border-radius: 1.5rem; 
-    margin-bottom: 1.5rem; 
-    padding: 1.5rem; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: block !important;
+    width: 100% !important;
+    background: var(--card-bg) !important; 
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important; /* 調亮邊框，讓獨立感更強 */
+    border-radius: 1.5rem !important; 
+    padding: 1.5rem !important; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
     backdrop-filter: blur(20px);
   }
 
