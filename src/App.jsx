@@ -120,30 +120,31 @@ function App() {
   return (
     <div className="app-container">
       <header className="dashboard-header">
-        <div className="logo-section">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', flexWrap: 'wrap' }}>
-            <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              XQ 智慧監控清單
-            </motion.h1>
-            
-            <button 
-              className={`nav-btn-desktop premium-btn ${isFavoritesView ? 'active' : ''}`}
-              onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
-            >
-              <Heart size={16} fill={isFavoritesView ? '#ff4b2b' : 'none'} color={isFavoritesView ? '#ff4b2b' : 'currentColor'} />
-              <span>{isFavoritesView ? '顯示全部' : '我的自選'}</span>
-              {favorites.length > 0 && <span className="count-badge">{favorites.length}</span>}
-            </button>
-          </div>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
+        <div className="logo-section" style={{ width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+              <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                XQ 智慧監控清單
+              </motion.h1>
+              
+              <button 
+                className={`nav-btn-desktop premium-btn ${isFavoritesView ? 'active' : ''}`}
+                onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
+              >
+                <Heart size={16} fill={isFavoritesView ? '#ff4b2b' : 'none'} color={isFavoritesView ? '#ff4b2b' : 'currentColor'} />
+                <span>{isFavoritesView ? '顯示全部' : '我的自選'}</span>
+                {favorites.length > 0 && <span className="count-badge">{favorites.length}</span>}
+              </button>
+            </div>
+
             <div className="date-badge">
               <Calendar size={14} />
               <span>數據更新呈現：{displayDate}</span>
             </div>
-            <div className="hide-mobile">
-              <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>大戶籌碼、外資持股與產業追蹤系統</p>
-            </div>
+          </div>
+          
+          <div className="hide-mobile" style={{ marginTop: '0.5rem' }}>
+            <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>大戶籌碼、外資持股與產業追蹤系統</p>
           </div>
         </div>
 
