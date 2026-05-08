@@ -19,25 +19,34 @@ const sheet = workbook.Sheets[sheetName];
 const data = xlsx.utils.sheet_to_json(sheet, { header: 1 });
 
 const result = [];
-let updateDate = "未知";
+let updateDate = "";
 
-// 嘗試抓取日期 (通常 XQ 匯出的第一行或檔名會有日期)
-// 這裡假設從資料內容中尋找日期格式
+// 強化日期偵測 (支援 / , - , 或純數字)
 for (let row of data) {
     for (let cell of row) {
-        if (typeof cell === 'string' && cell.match(/\d{4}\/\d{2}\/\d{2}/)) {
-            updateDate = cell.match(/\d{4}\/\d{2}\/\d{2}/)[0];
-            break;
+        if (typeof cell === 'string') {
+            const match = cell.match(/(\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2})|(\d{8})/);
+            if (match) {
+                updateDate = match[0];
+                break;
+            }
         }
     }
-    if (updateDate !== "未知") break;
+    if (updateDate) break;
 }
 
 // 如果內容沒抓到，就用檔案最後修改日期
-if (updateDate === "未知") {
+if (!updateDate) {
     const stats = fs.statSync(latestFile);
-    updateDate = stats.mtime.toLocaleDateString('zh-TW');
+    const d = stats.mtime;
+    updateDate = `${d.getFullYear()}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`;
 }
+
+// 標準化日期格式為 YYYY/MM/DD
+if (updateDate.length === 8 && !updateDate.includes('/')) {
+    updateDate = `${updateDate.substring(0,4)}/${updateDate.substring(4,6)}/${updateDate.substring(6,8)}`;
+}
+updateDate = updateDate.replace(/[\-\.]/g, '/');
 
 // 從第 4 行開始讀取資料 (跳過標題)
 for (let i = 3; i < data.length; i++) {
@@ -45,22 +54,21 @@ for (let i = 3; i < data.length; i++) {
     if (!row || !row[0]) continue;
 
     result.push({
-        id: row[0],           // 股票代號
-        name: row[1],         // 股票名稱
-        price: row[2],        // 現價
-        premium: row[8] || 0, // 溢價 (根據之前腳本的索引)
-        buyWeeks: row[9] || 0, // 連買週數
-        foreign_hold: row[10] || 0, // 外資持股
+        id: row[0],
+        name: row[1],
+        price: row[2],
+        premium: row[8] || 0,
+        buyWeeks: row[9] || 0,
+        foreign_hold: row[10] || 0,
         industry: row[11] || "未分類",
         status: row[12] || "觀察中"
     });
 }
 
-// 儲存包含日期的 JSON
 const output = {
     updateDate: updateDate,
     stocks: result
 };
 
 fs.writeFileSync('src/data.json', JSON.stringify(output, null, 2));
-console.log(`處理完成！共 ${result.length} 支股票。更新日期: ${updateDate}`);
+console.log(`處理完成！更新日期: ${updateDate}`);
