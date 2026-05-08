@@ -255,10 +255,12 @@ th, td {
 /* 手機版 (已經有的 media query 內微調) */
 @media (max-width: 600px) {
   /* 移除外層大框框，讓卡片徹底獨立 */
+  .app-container { padding: 1rem 0.5rem !important; } /* 縮小全螢幕內距 */
   .table-container {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    padding: 0 !important; /* 移除容器內距 */
   }
 
   table, tbody, tr, td { display: block; width: 100%; }
