@@ -54,33 +54,109 @@ body {
   background-image: var(--bg-gradient);
 }
 
-.dashboard-header {
-  margin-bottom: 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* 手機版導覽列與容器調整 */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 0.75rem;
+    padding-top: 4.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .dashboard-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--bg-color);
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--card-border);
+    backdrop-filter: blur(10px);
+  }
+
+  .logo-section h1 {
+    font-size: 1.1rem !important; /* 強制縮小標題 */
+    white-space: nowrap;
+  }
+
+  /* 隱藏手機版不必要的副標題 */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* 強制表格轉卡片 */
+  .table-container {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  table thead {
+    display: none !important;
+  }
+
+  table, tbody, tr, td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  tr {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 1rem !important;
+    margin-bottom: 1rem !important;
+    padding: 1rem !important;
+  }
+
+  td {
+    border: none !important;
+    padding: 0.6rem 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+
+  td:before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
 }
 
-.logo-section h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-}
-
-.logo-section p {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  margin-top: 0.25rem;
-}
-
-.table-container {
+/* 底部 Tab 選單 */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4.5rem;
   background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 1.25rem;
-  overflow: hidden;
   backdrop-filter: blur(20px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: var(--accent-color);
 }
 
 table {
