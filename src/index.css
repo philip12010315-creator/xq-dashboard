@@ -252,11 +252,11 @@ th, td {
 
 .count-badge { background: #ff4b2b; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; margin-left: 5px; }
 
-/* 手機版 (徹底修復版) */
+/* 手機版 (標題排版精確修復) */
 @media (max-width: 600px) {
   .app-container { 
     padding: 1rem; 
-    padding-top: 6.5rem !important; 
+    padding-top: 5.5rem !important; 
     padding-bottom: 6rem; 
   }
   
@@ -265,24 +265,53 @@ th, td {
     top: 0; left: 0; right: 0; 
     z-index: 1000; 
     background: var(--bg-color); 
-    padding: 1rem; 
+    padding: 0.75rem 1rem; /* 稍微縮小內距 */
     border-bottom: 1px solid var(--card-border); 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important; /* 強制橫向 */
+    justify-content: space-between !important;
+    align-items: center !important;
+    height: 4.5rem; /* 固定高度 */
   }
 
-  .logo-section h1 { font-size: 1.2rem !important; white-space: nowrap; }
-  .logo-section p { display: none; } 
+  .logo-section {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .logo-section h1 { 
+    font-size: 1.15rem !important; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
+
+  /* 強制隱藏標題旁邊的桌面版按鈕 */
+  .logo-section .nav-btn-desktop,
+  .logo-section p,
+  .hide-mobile { 
+    display: none !important; 
+  }
   
   .header-actions { 
     display: flex !important;
-    gap: 0.5rem !important; 
-    align-items: center;
+    flex-direction: row !important;
+    gap: 0.6rem !important; 
+    align-items: center !important;
+    margin-left: 0.5rem;
   }
 
-  .search-input { width: 120px !important; }
-  .hide-mobile, .nav-btn-desktop { display: none !important; }
+  .theme-toggle {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .search-input { 
+    width: 110px !important; 
+    padding: 0.5rem 0.5rem 0.5rem 2.2rem !important;
+    font-size: 0.85rem;
+  }
 
   /* 移除外層大框框，讓卡片徹底獨立 */
   .table-container {
