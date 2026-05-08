@@ -332,7 +332,7 @@ function App() {
       <nav className="bottom-nav">
         <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
           <Home size={26} />
-          <span>儀表板</span>
+          <span>首頁</span>
         </div>
         <div className={`nav-item ${isFavoritesView ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
           <div style={{ position: 'relative' }}>
