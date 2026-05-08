@@ -190,23 +190,28 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   color: var(--text-primary);
-  table-layout: auto;
+  table-layout: fixed; /* 改用 fixed 模式，這樣我們可以精確控制寬度 */
 }
 
 th, td {
-  padding: 1.2rem 1rem;
+  padding: 1.25rem 1.5rem; /* 增加間距，讓表格變大 */
   text-align: left;
   border-bottom: 1px solid var(--card-border);
-  white-space: nowrap;
 }
 
-th { background: var(--table-header); font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; }
+/* 針對特定欄位設定寬度比重 */
+th:nth-child(1), td:nth-child(1) { width: 120px; } /* 股票名稱 */
+th:nth-child(2), td:nth-child(2) { width: 80px; }  /* 現價 */
+th:nth-child(3), td:nth-child(3) { width: 80px; }  /* 溢價 */
+th:nth-child(4), td:nth-child(4) { width: 100px; } /* 大戶連增 */
+th:nth-child(5), td:nth-child(5) { width: 100px; } /* 大戶持股 */
+th:nth-child(6), td:nth-child(6) { width: 100px; } /* 外資持股 */
+th:nth-child(7), td:nth-child(7) { width: 120px; } /* 產業 */
 
-/* 讓最後一欄（產業地位）可以伸縮並填滿空間 */
+/* 最後一欄（產業地位）自動填滿所有剩餘空間 */
 th:last-child, td:last-child {
-  width: 100%;
+  width: auto;
   white-space: normal;
-  min-width: 250px;
 }
 
 .priority-row { background: rgba(16, 185, 129, 0.05); }
