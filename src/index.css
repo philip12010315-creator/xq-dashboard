@@ -74,10 +74,29 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
   margin-top: 0.25rem;
 }
 
-.header-actions {
+.nav-btn-desktop {
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--card-border);
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
   display: flex;
-  gap: 1.5rem;
   align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.nav-btn-desktop.active {
+  background: var(--accent-glow);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.nav-btn-desktop:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .search-container {

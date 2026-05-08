@@ -100,6 +100,15 @@ function App() {
         </div>
 
         <div className="header-actions">
+          {/* 電腦版自選股切換 */}
+          <button 
+            className={`nav-btn-desktop ${activeTab === 'favorites' ? 'active' : ''}`}
+            onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
+          >
+            <Star size={18} fill={activeTab === 'favorites' ? 'currentColor' : 'none'} />
+            {activeTab === 'favorites' ? '顯示全部' : '只看自選'}
+          </button>
+
           <div className="search-container">
             <Search className="search-icon" size={18} />
             <input 
