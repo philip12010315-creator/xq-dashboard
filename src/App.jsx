@@ -339,7 +339,7 @@ function App() {
             <Heart size={26} fill={isFavoritesView ? '#ff4b2b' : 'none'} color={isFavoritesView ? '#ff4b2b' : 'currentColor'} />
             {favorites.length > 0 && <span className="mobile-badge">{favorites.length}</span>}
           </div>
-          <span>自選股</span>
+          <span>收藏</span>
         </div>
       </nav>
     </div>
