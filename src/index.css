@@ -280,7 +280,7 @@ th, td {
   }
 
   .logo-section h1 { 
-    font-size: 1.15rem !important; 
+    font-size: 1.05rem !important; /* 稍微縮小，爭取右側空間 */
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -297,22 +297,22 @@ th, td {
   .header-actions { 
     display: flex !important;
     flex-direction: row !important;
-    gap: 0.6rem !important; 
+    gap: 0.4rem !important; /* 縮小間距 */
     align-items: center !important;
-    margin-left: 0.5rem;
+    margin-left: 0.3rem;
   }
 
   .theme-toggle {
-    width: 36px !important;
-    height: 36px !important;
+    width: 32px !important;
+    height: 32px !important;
   }
 
-  /* 搜尋框優化：確保文字顯示完整 */
+  /* 搜尋框極限寬度優化 */
   .search-input { 
-    width: 135px !important; 
-    padding: 0.5rem 0.6rem 0.5rem 2.2rem !important;
-    font-size: 0.9rem;
-    border-radius: 20px !important; /* 讓它更圓潤一點，更有設計感 */
+    width: 160px !important; 
+    padding: 0.5rem 0.5rem 0.5rem 2.1rem !important;
+    font-size: 0.85rem; /* 稍微縮小字體以容納更多字 */
+    border-radius: 20px !important;
   }
 
   /* 狀態欄優化：改為上下垂直排列，避免文字擠壓換行 */
