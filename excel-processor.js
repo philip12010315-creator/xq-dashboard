@@ -21,13 +21,19 @@ const data = xlsx.utils.sheet_to_json(sheet, { header: 1 });
 const result = [];
 let updateDate = "";
 
-// 強化日期偵測 (支援 / , - , 或純數字)
+// 精確抓取中文日期格式: 2026年 5月 8日
 for (let row of data) {
     for (let cell of row) {
         if (typeof cell === 'string') {
-            const match = cell.match(/(\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2})|(\d{8})/);
-            if (match) {
-                updateDate = match[0];
+            // 匹配 "2026年 5月 8日" 或 "2026/05/08" 等格式
+            const cnMatch = cell.match(/(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
+            const standardMatch = cell.match(/(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})/);
+            
+            if (cnMatch) {
+                updateDate = `${cnMatch[1]}/${cnMatch[2].padStart(2,'0')}/${cnMatch[3].padStart(2,'0')}`;
+                break;
+            } else if (standardMatch) {
+                updateDate = `${standardMatch[1]}/${standardMatch[2].padStart(2,'0')}/${standardMatch[3].padStart(2,'0')}`;
                 break;
             }
         }
@@ -35,31 +41,25 @@ for (let row of data) {
     if (updateDate) break;
 }
 
-// 如果內容沒抓到，就用檔案最後修改日期
+// 備援方案：如果內容真的抓不到，才用檔案時間
 if (!updateDate) {
     const stats = fs.statSync(latestFile);
     const d = stats.mtime;
     updateDate = `${d.getFullYear()}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`;
 }
 
-// 標準化日期格式為 YYYY/MM/DD
-if (updateDate.length === 8 && !updateDate.includes('/')) {
-    updateDate = `${updateDate.substring(0,4)}/${updateDate.substring(4,6)}/${updateDate.substring(6,8)}`;
-}
-updateDate = updateDate.replace(/[\-\.]/g, '/');
-
-// 從第 4 行開始讀取資料 (跳過標題)
-for (let i = 3; i < data.length; i++) {
+// 從第 5 行開始讀取資料 (跳過標題區域)
+for (let i = 4; i < data.length; i++) {
     const row = data[i];
-    if (!row || !row[0]) continue;
+    if (!row || !row[1]) continue; // 確保有代碼
 
     result.push({
-        id: row[0],
-        name: row[1],
-        price: row[2],
-        premium: row[8] || 0,
-        buyWeeks: row[9] || 0,
-        foreign_hold: row[10] || 0,
+        id: row[1],           // 代碼
+        name: row[2],         // 商品 (名稱)
+        price: row[3],        // 成交
+        premium: row[8] || 0, // 溢價
+        buyWeeks: row[9] || 0, // 連買週數
+        foreign_hold: row[10] || 0, // 外資持股
         industry: row[11] || "未分類",
         status: row[12] || "觀察中"
     });
@@ -71,4 +71,4 @@ const output = {
 };
 
 fs.writeFileSync('src/data.json', JSON.stringify(output, null, 2));
-console.log(`處理完成！更新日期: ${updateDate}`);
+console.log(`處理完成！偵測到日期: ${updateDate}`);

@@ -21,9 +21,11 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import dashboardData from './data.json';
 
-// 相容處理舊版資料格式
-const stockData = dashboardData.stocks || dashboardData;
-const lastUpdateDate = dashboardData.updateDate || "今日";
+// 優先使用資料內的日期，若無則顯示系統偵測日期
+const stockData = dashboardData.stocks || (Array.isArray(dashboardData) ? dashboardData : []);
+const excelDate = dashboardData.updateDate;
+const fallbackDate = new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+const displayDate = excelDate || fallbackDate;
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -124,7 +126,6 @@ function App() {
               XQ 智慧監控清單
             </motion.h1>
             
-            {/* 強化後的自選按鈕 */}
             <button 
               className={`nav-btn-desktop premium-btn ${isFavoritesView ? 'active' : ''}`}
               onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
@@ -138,7 +139,7 @@ function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
             <div className="date-badge">
               <Calendar size={14} />
-              <span>數據更新呈現：{lastUpdateDate}</span>
+              <span>數據更新呈現：{displayDate}</span>
             </div>
             <div className="hide-mobile">
               <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>大戶籌碼、外資持股與產業追蹤系統</p>
@@ -279,12 +280,14 @@ function App() {
                             {item.foreign_hold}%
                           </div>
                         </td>
-                        <td data-label="產業" className="hide-mobile">
-                          <div className="industry-cell">
-                            <Layers size={14} color="var(--text-secondary)" />
-                            {item.industry}
-                          </div>
-                        </td>
+                        {!isMobile && (
+                          <td data-label="產業" className="hide-mobile">
+                            <div className="industry-cell">
+                              <Layers size={14} color="var(--text-secondary)" />
+                              {item.industry}
+                            </div>
+                          </td>
+                        )}
                       </>
                     )}
 
