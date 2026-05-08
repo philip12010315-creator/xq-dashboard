@@ -120,30 +120,23 @@ function App() {
   return (
     <div className="app-container">
       <header className="dashboard-header">
-        <div className="logo-section" style={{ width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap', gap: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
-              <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-                XQ 智慧監控清單
-              </motion.h1>
-              
-              <button 
-                className={`nav-btn-desktop premium-btn ${isFavoritesView ? 'active' : ''}`}
-                onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
-              >
-                <Heart size={16} fill={isFavoritesView ? '#ff4b2b' : 'none'} color={isFavoritesView ? '#ff4b2b' : 'currentColor'} />
-                <span>{isFavoritesView ? '顯示全部' : '我的自選'}</span>
-                {favorites.length > 0 && <span className="count-badge">{favorites.length}</span>}
-              </button>
-            </div>
-
-            <div className="date-badge">
-              <Calendar size={14} />
-              <span>數據更新呈現：{displayDate}</span>
-            </div>
+        <div className="logo-section">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+            <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+              XQ 智慧監控清單
+            </motion.h1>
+            
+            <button 
+              className={`nav-btn-desktop premium-btn ${isFavoritesView ? 'active' : ''}`}
+              onClick={() => setActiveTab(activeTab === 'home' ? 'favorites' : 'home')}
+            >
+              <Heart size={16} fill={isFavoritesView ? '#ff4b2b' : 'none'} color={isFavoritesView ? '#ff4b2b' : 'currentColor'} />
+              <span>{isFavoritesView ? '顯示全部' : '我的自選'}</span>
+              {favorites.length > 0 && <span className="count-badge">{favorites.length}</span>}
+            </button>
           </div>
           
-          <div className="hide-mobile" style={{ marginTop: '0.5rem' }}>
+          <div className="hide-mobile" style={{ marginTop: '0.4rem' }}>
             <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>大戶籌碼、外資持股與產業追蹤系統</p>
           </div>
         </div>
@@ -165,14 +158,20 @@ function App() {
         </div>
       </header>
 
-      <div className="controls-bar hide-mobile">
+      {/* 功能列：左邊按鈕，右邊日期 */}
+      <div className="controls-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <button 
           onClick={() => setIsPriorityMode(!isPriorityMode)}
-          className={`priority-btn ${isPriorityMode ? 'active' : ''}`}
+          className={`priority-btn ${isPriorityMode ? 'active' : ''} ${isMobile ? 'hide-mobile' : ''}`}
         >
           <Zap size={14} fill={isPriorityMode ? 'currentColor' : 'none'} />
           連買 3 週優先置頂: {isPriorityMode ? '開啟' : '關閉'}
         </button>
+
+        <div className="date-badge">
+          <Calendar size={14} />
+          <span>數據更新呈現：{displayDate}</span>
+        </div>
       </div>
 
       <motion.div 
