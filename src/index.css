@@ -140,6 +140,8 @@ body, .app-container, .table-container, .theme-toggle, td, th, input, .priority-
 }
 
 /* Table */
+.bottom-nav { display: none; } /* 電腦版強制隱藏 */
+
 .table-container {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
