@@ -257,7 +257,7 @@ th, td {
   .app-container { 
     padding: 1rem; 
     padding-top: 5.25rem !important; /* 精確計算：剛好避開 4.5rem 的標題，不浪費空間 */
-    padding-bottom: 6rem; 
+    padding-bottom: 4.5rem !important; /* 縮小底部留白，配合新的導航欄高度 */
   }
   
   .dashboard-header { 
@@ -364,16 +364,16 @@ th, td {
     display: block !important;
     width: 100% !important;
     background: var(--card-bg) !important; 
-    border: 1.5px solid rgba(255, 255, 255, 0.15) !important; /* 調亮邊框，讓獨立感更強 */
-    border-radius: 1.5rem !important; 
-    padding: 1.5rem !important; 
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important; 
+    border-radius: 1.25rem !important; /* 稍微縮小圓角 */
+    padding: 1rem 1.25rem !important; /* 大幅縮小卡片上下左右的內距 */
     box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
     backdrop-filter: blur(20px);
   }
 
   td { 
     border: none !important; 
-    padding: 0.8rem 0; 
+    padding: 0.5rem 0 !important; /* 縮小卡片內每一行的間距 */
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
@@ -411,7 +411,7 @@ th, td {
   }
 
   .bottom-nav {
-    display: flex; position: fixed; bottom: 0; left: 0; right: 0; height: 5.5rem;
+    display: flex; position: fixed; bottom: 0; left: 0; right: 0; height: 4.2rem; /* 降低導航欄高度 */
     background: var(--card-bg); border-top: 1px solid var(--card-border);
     justify-content: space-around; align-items: center; backdrop-filter: blur(20px); z-index: 1000;
   }
