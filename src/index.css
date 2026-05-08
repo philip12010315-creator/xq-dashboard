@@ -190,28 +190,34 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   color: var(--text-primary);
-  table-layout: fixed; /* 改用 fixed 模式，這樣我們可以精確控制寬度 */
+  table-layout: auto; /* 回歸自動佈局，讓它自然撐開 */
 }
 
 th, td {
-  padding: 1.25rem 1.5rem; /* 增加間距，讓表格變大 */
+  padding: 1.25rem 1.5rem; 
   text-align: left;
   border-bottom: 1px solid var(--card-border);
 }
 
-/* 針對特定欄位設定寬度比重 */
-th:nth-child(1), td:nth-child(1) { width: 120px; } /* 股票名稱 */
-th:nth-child(2), td:nth-child(2) { width: 80px; }  /* 現價 */
-th:nth-child(3), td:nth-child(3) { width: 80px; }  /* 溢價 */
-th:nth-child(4), td:nth-child(4) { width: 100px; } /* 大戶連增 */
-th:nth-child(5), td:nth-child(5) { width: 100px; } /* 大戶持股 */
-th:nth-child(6), td:nth-child(6) { width: 100px; } /* 外資持股 */
-th:nth-child(7), td:nth-child(7) { width: 120px; } /* 產業 */
+th {
+  background: var(--table-header);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
 
-/* 最後一欄（產業地位）自動填滿所有剩餘空間 */
+/* 產業地位欄位（最後一欄）填滿剩餘空間，且允許自動換行 */
 th:last-child, td:last-child {
-  width: auto;
+  width: 40%; /* 給它最大的配額 */
   white-space: normal;
+  min-width: 300px;
+}
+
+/* 確保其他欄位有足夠的基本寬度 */
+th:not(:last-child), td:not(:last-child) {
+  min-width: 100px;
 }
 
 .priority-row { background: rgba(16, 185, 129, 0.05); }
