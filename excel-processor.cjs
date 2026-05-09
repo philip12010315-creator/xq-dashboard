@@ -12,7 +12,7 @@ const COLUMN_CONFIG = {
     price:          { keywords: ["目前股價", "收盤", "成交"], required: true },
     foreign_cost:   { keywords: ["外資成本"], required: false },
     premium:        { keywords: ["溢價%"], required: false },
-    major_streak:   { keywords: ["大戶連增週"], required: false },
+    buyWeeks:       { keywords: ["大戶連增週"], required: false },
     retail_streak:  { keywords: ["散戶連減週"], required: false },
     holders_streak: { keywords: ["人數連減週"], required: false },
     major_hold:     { keywords: ["大戶持股%"], required: false },
