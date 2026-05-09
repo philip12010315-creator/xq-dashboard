@@ -214,7 +214,18 @@ function App() {
         initial={{ opacity: 0, y: 20 }} 
         animate={{ opacity: 1, y: 0 }}
       >
-        {sortedData.length === 0 ? (
+        {loading ? (
+          <div style={{ padding: '8rem 2rem', textAlign: 'center' }}>
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              style={{ display: 'inline-block', marginBottom: '1rem' }}
+            >
+              <Zap size={32} color="var(--accent-color)" />
+            </motion.div>
+            <p style={{ color: 'var(--text-secondary)' }}>正在獲取最新數據...</p>
+          </div>
+        ) : sortedData.length === 0 ? (
           <div style={{ padding: '6rem 2rem', textAlign: 'center' }}>
             <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
               <Heart size={48} color="var(--text-secondary)" style={{ marginBottom: '1rem', opacity: 0.2 }} />
