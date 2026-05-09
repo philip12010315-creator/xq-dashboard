@@ -51,7 +51,7 @@ fs.watch('.', { recursive: true }, (eventType, filename) => {
     if (filename.includes('node_modules') || 
         filename.includes('.git') || 
         filename.includes('dist') ||
-        filename.includes('src/data.json') || // 最重要的排除：不要監控產出的結果
+        filename.includes('public/data.json') || // 最重要的排除：不要監控產出的結果
         filename.includes('package-lock.json')) return;
 
     // 2. 只監控特定副檔名
