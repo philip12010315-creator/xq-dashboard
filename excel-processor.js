@@ -141,10 +141,10 @@ if (!updateDate) {
 
 // 6. 輸出 JSON
 const output = { updateDate, stocks: result };
-const outputPath = path.join('src', 'data.json');
+const outputPath = path.join('public', 'data.json');
 
-// 確保 src 目錄存在
-if (!fs.existsSync('src')) fs.mkdirSync('src');
+// 確保 public 目錄存在
+if (!fs.existsSync('public')) fs.mkdirSync('public');
 
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
 console.log(`✅ 同步成功！檔案：${targetFile}`);
