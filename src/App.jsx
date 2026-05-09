@@ -21,12 +21,11 @@ import {
   ListFilter
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import dashboardData from './data.json';
+// 移除靜態 import，改用動態 fetch 以避免手機版快取問題
 
-const stockData = dashboardData.stocks || (Array.isArray(dashboardData) ? dashboardData : []);
-const excelDate = dashboardData.updateDate;
-const fallbackDate = new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
-const displayDate = excelDate || fallbackDate;
+
+// 資料初始化移至組件內部
+
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,6 +39,33 @@ function App() {
     const saved = localStorage.getItem('xq_favorites');
     return saved ? JSON.parse(saved) : [];
   });
+
+  // --- 新增資料讀取邏輯 ---
+  const [data, setData] = useState({ stocks: [], updateDate: '' });
+  const [loading, setLoading] = useState(true);
+
+  const stockData = data.stocks || [];
+  const displayDate = data.updateDate || new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // 使用時間戳記強迫繞過瀏覽器快取 (Cache Busting)
+        const timestamp = new Date().getTime();
+        const response = await fetch(`./data.json?t=${timestamp}`);
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error("無法讀取最新資料:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+  // -----------------------
+
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 600);
